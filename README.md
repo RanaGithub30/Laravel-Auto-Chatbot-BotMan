@@ -1,7 +1,4 @@
-## Step By Step Guidence
-
-Step by Step Guide for Implementation of BotMAn(Automatic Chat Bot) with Laravel 9
-
+## Step By Step Guidence for Implementation of BotMAn(Automatic Chat Bot) with Laravel 9 
 
  - Install Laravel 9 --> composer create-project laravel/laravel:^9.0 project-name
  - Install Botman and Botman Driver --> 
@@ -48,4 +45,14 @@ Step by Step Guide for Implementation of BotMAn(Automatic Chat Bot) with Laravel
  - In this step, Execute the php artisan serve command on terminal to start server locally.
              
              php artisan serve
-           
+
+## create DB table & store chats in db
+
+ - create Model & Migration using following command
+            
+                php artisan make:model BotManChat -m
+
+- open App\Models\BotManChat & update the code as per this project
+- Run the migration command to migrate the table using following command
+             php artisan migrate
+- 
