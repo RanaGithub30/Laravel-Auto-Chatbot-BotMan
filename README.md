@@ -55,4 +55,3 @@
 - open App\Models\BotManChat & update the code as per this project
 - Run the migration command to migrate the table using following command
              php artisan migrate
-- 
