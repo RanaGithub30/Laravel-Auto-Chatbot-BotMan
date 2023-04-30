@@ -1,6 +1,3 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
-
-
 ## Step By Step Guidence
 
 Step by Step Guide for Implementation of BotMAn(Automatic Chat Bot) with Laravel 9
@@ -28,7 +25,7 @@ Step by Step Guide for Implementation of BotMAn(Automatic Chat Bot) with Laravel
                     ],
                 ];
 
- = After that, open “.env” file and update the database name, username and password in the env file
+ - After that, open “.env” file and update the database name, username and password in the env file
             
             DB_DATABASE=Enter_Your_Database_Name
             DB_USERNAME=Enter_Your_Database_Username
