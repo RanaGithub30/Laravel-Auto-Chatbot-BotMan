@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\BotMan\Messages\Outgoing\Question;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -77,7 +79,27 @@ class BotmanManageController extends Controller
                                         'question' => $question,
                                     ]);
 
-                                    $this->say('Thank you, Our experts will contact with you shortly');
+                                    // popup enquiry form
+
+                                    if($question != ""){
+                                           $question = Question::create('What kind of Service you are looking for?')
+                                                ->addButtons([
+                                                    Button::create('Web Development')->value('Web Development'),
+                                                    Button::create('Mobile Application')->value('Mobile Application'),
+                                                    Button::create('Digital Marketing')->value('Digital Marketing'),
+                                                ]);
+
+                                            $this->ask($question, function(Answer $answer) use($user_id) {
+                                                if ($answer->isInteractiveMessageReply()) {
+                                                    
+                                                    DB::table('bot_man_chats')->where('user_id', $user_id)->update([
+                                                        'enquiry_for' => $answer->getValue(),
+                                                    ]);
+
+                                                    $this->say('Thank you, Our experts will contact with you shortly');
+                                                }
+                                            }); 
+                                    }
                             });
                         }
 

@@ -56,3 +56,7 @@
 - Run the migration command to migrate the table using following command
              php artisan migrate
 - now follow the code in BotmanManageController for storeing data in (name, email & question) in databse
+
+## Prompt the visitor to choose one of the Enquiry
+
+- 
