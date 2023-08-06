@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Incoming\Answer;
-use App\Models\BotManChat;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class BotmanManageController extends Controller
 {
@@ -15,6 +16,7 @@ class BotmanManageController extends Controller
     /**
      * Place your BotMan logic here.
      */
+
     public function handle()
     {
         $botman = app('botman');
@@ -24,8 +26,7 @@ class BotmanManageController extends Controller
             if ($message == 'hi' || $message == 'Hi' || $message == 'Hello' || $message == 'hello') {
                 $this->askName($botman);
             }else{
-                $botman->reply("How can I help you ?");
-                // $question = $answer->getText();
+                $this->askName($botman);
             }
    
         });
@@ -41,73 +42,48 @@ class BotmanManageController extends Controller
         $botman->ask('Hello! What is your Name?', function(Answer $answer) {
             $name = $answer->getText();
 
-            $this->say('Nice to meet you '.$name);
-            $this->say('please Enter Your Email');
+            $user_id = Str::random(15);
+               
+           if($name != ""){
+                   // enter name in db
+
+                    DB::table('bot_man_chats')->insert([
+                        'user_id' => $user_id,
+                        'name' => $name,
+                    ]);
+
+                    $this->say('Nice to meet you '.$name);
+
+                    // ask email
+
+                    $this->ask('please Enter Your Email', function(Answer $answer) use($user_id) {
+                        $email = $answer->getText();
+
+                        if($email != ""){
+                            // enter email in db
+
+                            DB::table('bot_man_chats')->where('user_id', $user_id)->update([
+                                'email' => $email,
+                            ]);
+
+                            // ask question 
+
+                            $this->ask('How can I help you ?', function(Answer $answer) use($user_id){
+                                   $question = $answer->getText();
+
+                                   // enter question in db
+
+                                    DB::table('bot_man_chats')->where('user_id', $user_id)->update([
+                                        'question' => $question,
+                                    ]);
+
+                                    $this->say('Thank you, Our experts will contact with you shortly');
+                            });
+                        }
+
+                    });
+
+                }
         });
     }
-
-    // public function askEmail($botman)
-    // {
-
-    //     $botman->ask('please Enter Your Email', function(Answer $answer) {
-    //         $email = $answer->getText();
-    //         $this->say('Grate, Now you can ask any question. Our Expert will back to you shortly');
-    //     });
-    // }
-
-    // /**
-    //  * store name in db 
-    // */
-
-    // public function storeName($name)
-    // {
-    //        /**
-    //         * check the name is already present in db or not
-    //         * If, not present it will create one 
-    //        */
-
-    //        $check = BotManChat::whereName($name)->first();
-    //        if($check == null){
-    //             BotManChat::create([
-    //                    'Name' => $name,
-    //             ]);
-    //        }
-    // }
-
-    /**
-     * Update in db 
-    */
-
-    // public function storeEmail($email, $name)
-    // {
-    //     /**
-    //         * check the name is already present in db or not
-    //         * If, not present it will create one 
-    //        */
-
-    //        $check = BotManChat::whereName($name)->first();
-    //        if($check != null){
-    //             $check->update([
-    //                    'email' => $email,
-    //             ]);
-    //        }
-    // }
-
-    // /**
-    //  * store question 
-    // */
-    // public function storeQuestion($question, $name)
-    // {
-    //     /**
-    //         * check the name is already present in db or not
-    //         * If, not present it will create one 
-    //        */
-
-    //        $check = BotManChat::whereName($name)->first();
-    //        if($check != null){
-    //             $check->update([
-    //                    'question' => $question,
-    //             ]);
-    //        }
-    // }
 }

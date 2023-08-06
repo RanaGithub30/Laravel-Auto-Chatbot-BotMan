@@ -55,3 +55,4 @@
 - open App\Models\BotManChat & update the code as per this project
 - Run the migration command to migrate the table using following command
              php artisan migrate
+- now follow the code in BotmanManageController for storeing data in (name, email & question) in databse
