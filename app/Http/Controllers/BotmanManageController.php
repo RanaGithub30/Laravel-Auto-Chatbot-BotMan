@@ -68,20 +68,9 @@ class BotmanManageController extends Controller
                                 'email' => $email,
                             ]);
 
-                            // ask question 
-
-                            $this->ask('How can I help you ?', function(Answer $answer) use($user_id){
-                                   $question = $answer->getText();
-
-                                   // enter question in db
-
-                                    DB::table('bot_man_chats')->where('user_id', $user_id)->update([
-                                        'question' => $question,
-                                    ]);
-
                                     // popup enquiry form
 
-                                    if($question != ""){
+                                    // if($question != ""){
                                            $question = Question::create('What kind of Service you are looking for?')
                                                 ->addButtons([
                                                     Button::create('Web Development')->value('Web Development'),
@@ -96,15 +85,23 @@ class BotmanManageController extends Controller
                                                         'enquiry_for' => $answer->getValue(),
                                                     ]);
 
-                                                    $this->say('Thank you, Our experts will contact with you shortly');
+                                                    // ask question 
+
+                                                        $this->ask('How can I help you ?', function(Answer $answer) use($user_id){
+                                                                $question = $answer->getText();
+                            
+                                                                // enter question in db
+                            
+                                                                DB::table('bot_man_chats')->where('user_id', $user_id)->update([
+                                                                    'question' => $question,
+                                                                ]);
+
+                                                                $this->say('Thank you, Our experts will contact with you shortly');
+                                                        });
                                                 }
-                                            }); 
-                                    }
-                            });
+                                            });            
                         }
-
                     });
-
                 }
         });
     }

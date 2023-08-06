@@ -59,4 +59,4 @@
 
 ## Prompt the visitor to choose one of the Enquiry
 
-- 
+- now follow the code in BotmanManageController for storeing data in (enquiry_for) in databse
